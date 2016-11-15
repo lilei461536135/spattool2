@@ -8,7 +8,10 @@ WINDOW **create_main_win();
 
 int main()
 {
-    create_main_win();
+    WINDOW **items;
+
+    items = create_main_win();
+    delete [] items;
     getch();
     endwin();
 }
@@ -18,6 +21,7 @@ WINDOW **create_main_win()
     WINDOW **items;
     items = new WINDOW* [4];
     int height, width, starty, startx;
+    string title = "spattool";
 
     initscr();          /* Initialize standard screen */
     if(has_colors() == FALSE)
@@ -46,10 +50,27 @@ WINDOW **create_main_win()
     width = 60;
     startx = (COLS - width) / 2;
     starty = (LINES - height) / 2;
-    items[0] = newwin(height, width, starty, startx);
-    wbkgd(items[0], COLOR_PAIR(1));    /* set background color */
+    /* items[0]: main window */
+    items[0] = newwin(1, width, starty, startx);
+    wbkgd(items[0], COLOR_PAIR(2));    /* set background color */
+    mvwaddstr(items[0], 0, (width-title.length())/2, title.c_str());
     wrefresh(items[0]);
 
+    /* menu window */
+    items[1] = newwin(1, width, starty+1, startx);
+    wbkgd(items[1], COLOR_PAIR(3));
+    wrefresh(items[1]);
+
+    /* content window */
+    items[2] = newwin(height-3, width, starty+2, startx);
+    wbkgd(items[2], COLOR_PAIR(1));    /* set background color */
+    box(items[2],0, 0);
+    wrefresh(items[2]);
+
+    /* status window */
+    items[3] = subwin(items[2], 1, width, starty-1, startx);
+    wbkgd(items[3], COLOR_PAIR(1));
+    wrefresh(items[3]);
 
 
     return items;
