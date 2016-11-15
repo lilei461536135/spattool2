@@ -64,12 +64,12 @@ WINDOW **create_main_win()
     /* content window */
     items[2] = newwin(height-3, width, starty+2, startx);
     wbkgd(items[2], COLOR_PAIR(1));    /* set background color */
-    box(items[2],0, 0);
     wrefresh(items[2]);
 
     /* status window */
-    items[3] = subwin(items[2], 1, width, starty-1, startx);
+    items[3] = newwin(1, width, height, startx);
     wbkgd(items[3], COLOR_PAIR(1));
+    mvwaddstr(items[3], 0, 1, "welcome");
     wrefresh(items[3]);
 
 
